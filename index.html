@@ -1,0 +1,78 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        input {
+            width: 300px;
+            padding: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        img {
+            margin-top: 20px;
+            max-width: 80%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Generate Image</h1>
+<p>Enter a prompt and click "Generate Image" to see the result.</p>
+
+<input type="text" id="promptInput" placeholder="Enter your prompt here" />
+<button id="generateButton">Generate Image</button>
+
+<div id="imageContainer">
+    <img id="generatedImage" src="" alt="Generated Image" style="display:none;"/>
+</div>
+
+<script>
+    document.getElementById("generateButton").addEventListener("click", function () {
+        let prompt = document.getElementById("promptInput").value;
+        if (!prompt) {
+            alert("Please enter a prompt.");
+            return;
+        }
+
+        // Call the API to generate the image (this is a simulated example)
+        fetch('https://api.openai.com/v1/images/generations', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer YOUR_API_KEY'  // Replace with your actual OpenAI API key
+            },
+            body: JSON.stringify({
+                prompt: prompt,
+                n: 1,
+                size: "1024x1024"
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const imageUrl = data.data[0].url;
+            const imageElement = document.getElementById("generatedImage");
+
+            imageElement.src = imageUrl;
+            imageElement.style.display = "block";
+        })
+        .catch(error => {
+            console.error("Error generating image:", error);
+            alert("Something went wrong. Please try again.");
+        });
+    });
+</script>
+
+</body>
+</html>
