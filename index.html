@@ -1,9 +1,9 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Generator</title>
+    <title>Imagen 3 Image Generator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,7 +28,7 @@
 </head>
 <body>
 
-<h1>Generate Image</h1>
+<h1>Generate Image with Imagen 3</h1>
 <p>Enter a prompt and click "Generate Image" to see the result.</p>
 
 <input type="text" id="promptInput" placeholder="Enter your prompt here" />
@@ -46,26 +46,31 @@
             return;
         }
 
-        // Call the API to generate the image (this is a simulated example)
-        fetch('https://api.openai.com/v1/images/generations', {
+        // Hypothetical Imagen 3 API request
+        fetch('https://api.imagen.com/generate', {  // Replace with Imagen 3 API URL
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer YOUR_API_KEY'  // Replace with your actual OpenAI API key
+                'Authorization': 'Bearer YOUR_IMAGEN_API_KEY'  // Replace with your Imagen API key
             },
             body: JSON.stringify({
                 prompt: prompt,
-                n: 1,
-                size: "1024x1024"
+                num_images: 1,  // Number of images to generate
+                size: "1024x1024"  // Image size (you can adjust this)
             })
         })
         .then(response => response.json())
         .then(data => {
-            const imageUrl = data.data[0].url;
-            const imageElement = document.getElementById("generatedImage");
+            if (data && data.image_url) {
+                const imageUrl = data.image_url;  // Assuming response contains the image URL
 
-            imageElement.src = imageUrl;
-            imageElement.style.display = "block";
+                const imageElement = document.getElementById("generatedImage");
+                imageElement.src = imageUrl;
+                imageElement.style.display = "block";
+            } else {
+                console.error("Error: No image URL returned");
+                alert("Something went wrong. Please try again.");
+            }
         })
         .catch(error => {
             console.error("Error generating image:", error);
